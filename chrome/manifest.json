@@ -1,0 +1,14 @@
+{
+	"manifest_version": 2,
+	"name": "Eggstension",
+	"version": "1.0",
+	"description": "Replaces perfectly normal text with its eggcorn equivalent.",
+	"content_scripts": 
+	[
+		{
+			"matches": ["*://*/*"],
+			"js": ["eggstension.js"],
+			"run_at": "document_end"
+		}
+	]
+}
