@@ -11,6 +11,7 @@ var eggcorns = [
     { find: 'chute', replace: 'shoot' },
     { find: 'clique', replace: 'click' },
     { find: 'cole slaw', replace: 'cold slaw' },
+    { find: 'coleslaw', replace: 'coldslaw' },
     { find: 'compliments to the chef', replace: 'condiments to the chef' },
     { find: 'cut to the chase', replace: 'cut to the cheese' },
     { find: 'disingenuous', replace: 'disingenuine' },
@@ -70,12 +71,34 @@ var eggcorns = [
     { find: 'worthwhile', replace: 'worthwild' }
 ];
 
+walk(document.body);
+
+if (window.MutationObserver) {
+    var observer = new MutationObserver(function(mutations) {
+        Array.prototype.forEach.call(mutations, function(m) {
+            if (m.type === 'childList') {
+                walk(m.target);
+            } else if (m.target.nodeType === 3) {
+                handleText(m.target);
+            }
+        });
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        attributes: false,
+        characterData: true,
+        subtree: true
+    });
+}
+
 function capitalize(value) {
     return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 function handleText(textNode) {
-    var text = textNode.nodeValue;
+    var originalText = textNode.nodeValue;
+    var text = originalText;
 
     eggcorns.forEach(function(eggcorn) {
         var regexp = new RegExp('\\b' + eggcorn.find + '\\b', 'gi');
@@ -91,7 +114,10 @@ function handleText(textNode) {
         });
     });
     
-    textNode.nodeValue = text;
+    // Avoid infinite series of DOM changes
+    if (originalText !== text) {
+        textNode.nodeValue = text;
+    }
 }
 
 function walk(node)  {
@@ -118,7 +144,5 @@ function walk(node)  {
             break;
     }
 }
-
-walk(document.body);
 
 // I stole a bunch of the code from here: https://raw.githubusercontent.com/panicsteve/cloud-to-butt/master/Source/content_script.js
