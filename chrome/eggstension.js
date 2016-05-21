@@ -13,6 +13,7 @@ var eggcorns = [
     { find: 'cole slaw', replace: 'cold slaw' },
     { find: 'coleslaw', replace: 'coldslaw' },
     { find: 'compliments to the chef', replace: 'condiments to the chef' },
+    { find: 'commander in chief', replace: 'command her in cheese' },
     { find: 'cut to the chase', replace: 'cut to the cheese' },
     { find: 'disingenuous', replace: 'disingenuine' },
     { find: 'down pat', replace: 'down packed' },
